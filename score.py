@@ -1,7 +1,10 @@
 import numpy as np
 import pandas as pd
 
-df = pd.read_csv('/Users/owenhunger/Documents/Research/CSV/CMA.CSV')
+from pathlib import Path 
+
+csv1 = Path(__file__).with_name('CMA.CSV')
+df = pd.read_csv(csv1)
 
 print('\nCMA DS \n')
 
