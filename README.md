@@ -1,3 +1,5 @@
 # Research_Owen-Evan
-Research Assistant Position with Dr Sturm and Korpusik :D
-Owen H, Evan Y
+
+Completed 
+  - Frequency Table for Edinburgh
+  - Depression + Anxiety total that were diagnosed in each but not combinations yet
