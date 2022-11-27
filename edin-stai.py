@@ -56,6 +56,7 @@ def suicidality(row): # || EDINBURGH || #want to double check with prof
     if(row['V1CA10']<=3): score = 1 
     return score
     
+    
 def subSTAI(row): # || STAI ||  subscore if>=40: 1, 0 otherwise
     score = 0
     if(row['TotalSTAIScore'] >= 40): score = 1
@@ -68,9 +69,41 @@ def histo(): # TODO: HISTOGRAMS void function
     plt.title('STAI TotalScore')
     plt.show()
 
-def newSet(row): #Trying to make descriptive 
 
+def other_condition(row): #Trying to make descriptive 
+    temp = row['CMAE04a6_SP']
+    if(temp == 'ADHD' ):
+        row['ADHD'] = 1
+    if(temp == 'OCD'):
+        row['OCD'] = 1
+    if(temp == 'panic disorder'):
+        row['panic disorder'] = 1
     pass
+
+def adhd(row):
+    temp = row['CMAE04a6_SP']
+    if (isinstance(temp, str)):
+        temp = temp.lower()
+        if('adhd' in temp): 
+            return 1
+    return 0  
+
+def ocd(row):
+    temp = row['CMAE04a6_SP']
+    if (isinstance(temp, str)):
+        temp = temp.lower()
+        if('ocd' in temp):
+            return 1
+    return 0  
+
+def panic_disorder(row): 
+    temp = row['CMAE04a6_SP']
+    if (isinstance(temp, str)):
+        temp = temp.lower()
+        if('panic disorder' in temp):
+            return 1
+    return 0  
+
 
 
 def main():
@@ -87,16 +120,19 @@ def main():
     print('SubEdinScore (1 if>=10 )   SubSTAIScore (1 if>=40)  Suicidality(endorsed #10 Edinburgh')
     print('CMAE04a1 (a,b,c) = 1 if treated for depression.  CMAE04a2 (a,b,c) = 1 if treated for anxiety \n')
     
-    
     dff = pd.DataFrame()
     dff = pd.merge(pd.merge(dfe,dfs, on="PublicID"),dfp,on="PublicID")
-    dff = dff[['PublicID', 'SubEDINScore', 'SubSTAIScore', 'Suicidality', 'CMAE04a1a', 'CMAE04a1b','CMAE04a1c','CMAE04a2a','CMAE04a2b','CMAE04a2c']]
-    #   OTHER CONDITIONS WE WILL FIGURE OUT LATER ,'CMAE04a6a' b c 4a7a,b,c
-    #print(len(dff['PublicID'])) ~ 7900
-    print(dff[:10], '\n')
-    print(dff.corr(method='pearson'))
+    dff = dff[['PublicID', 'SubEDINScore', 'SubSTAIScore', 'Suicidality', 'CMAE04a1a', 'CMAE04a1b','CMAE04a1c','CMAE04a2a','CMAE04a2b','CMAE04a2c','CMAE04a6_SP']]
 
+    dff['ADHD'] =  dff.apply(adhd, axis=1)
+    dff['OCD'] =  dff.apply(ocd, axis=1)
+    dff['panic disorder'] = dff.apply(panic_disorder, axis=1)
 
+    print('ADHD#:', len(dff[dff['ADHD'] == 1]), 'ocd#:', len(dff[dff['OCD'] == 1]), 'panic disorder#:', len(dff[dff['panic disorder'] == 1]))
+    del dff['CMAE04a6_SP']
+
+    print(dff[:8], '\n')
+    print(dff.corr())
 
 
 
