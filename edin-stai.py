@@ -53,7 +53,7 @@ def subEdinburgh(row): # || EDINBURGH || subscore if>=10: 1, 0 otherwise
 
 def suicidality(row): # || EDINBURGH || #want to double check with prof
     score = 0
-    if(row['V1CA10']<=3): score = 1
+    if(row['V1CA10']<=3): score = 1 
     return score
     
 def subSTAI(row): # || STAI ||  subscore if>=40: 1, 0 otherwise
@@ -78,25 +78,24 @@ def main():
     dfe['TotalEDINScore'] = dfe.apply(f, axis=1)    
     dfe['SubEDINScore'] = dfe.apply(subEdinburgh, axis=1)
     dfe['Suicidality'] = dfe.apply(suicidality, axis=1)
-    #print('\n Edinburgh \n' )
-    #print(dfe.head())
 
-    
     dfs['TotalSTAIScore'] = dfs.apply(v1, axis=1) 
     dfs['SubSTAIScore'] = dfs.apply(subSTAI, axis=1)
-    #print('\n STAI \n')
-    #print(dfs.head())
+    #histo()
 
     print('\n   GUIDE:')
     print('SubEdinScore (1 if>=10 )   SubSTAIScore (1 if>=40)  Suicidality(endorsed #10 Edinburgh')
     print('CMAE04a1 (a,b,c) = 1 if treated for depression.  CMAE04a2 (a,b,c) = 1 if treated for anxiety \n')
     
-
+    
     dff = pd.DataFrame()
     dff = pd.merge(pd.merge(dfe,dfs, on="PublicID"),dfp,on="PublicID")
     dff = dff[['PublicID', 'SubEDINScore', 'SubSTAIScore', 'Suicidality', 'CMAE04a1a', 'CMAE04a1b','CMAE04a1c','CMAE04a2a','CMAE04a2b','CMAE04a2c']]
-    #print(len(dff['PublicID']))
-    print(dff.head())
+    #   OTHER CONDITIONS WE WILL FIGURE OUT LATER ,'CMAE04a6a' b c 4a7a,b,c
+    #print(len(dff['PublicID'])) ~ 7900
+    print(dff[:10], '\n')
+    print(dff.corr(method='pearson'))
+
 
 
 
