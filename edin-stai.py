@@ -57,6 +57,7 @@ def suicidality(row): # || EDINBURGH || #want to double check with prof
     return score
     
     
+    
 def subSTAI(row): # || STAI ||  subscore if>=40: 1, 0 otherwise
     score = 0
     if(row['TotalSTAIScore'] >= 40): score = 1
@@ -89,7 +90,7 @@ def adhd(row):
     return 0  
 
 def ocd(row):
-    temp = row['CMAE04a6_SP']
+    temp = row['CMAE04a6_SP']   
     if (isinstance(temp, str)):
         temp = temp.lower()
         if('ocd' in temp):
@@ -103,7 +104,6 @@ def panic_disorder(row):
         if('panic disorder' in temp):
             return 1
     return 0  
-
 
 
 def main():
@@ -121,19 +121,19 @@ def main():
     print('CMAE04a1 (a,b,c) = 1 if treated for depression.  CMAE04a2 (a,b,c) = 1 if treated for anxiety \n')
     
     dff = pd.DataFrame()
-    dff = pd.merge(pd.merge(dfe,dfs, on="PublicID"),dfp,on="PublicID")
+    dff = pd.merge(pd.merge(dfe,dfs, on="PublicID"),dfp,on="PublicID")                         
     dff = dff[['PublicID', 'SubEDINScore', 'SubSTAIScore', 'Suicidality', 'CMAE04a1a', 'CMAE04a1b','CMAE04a1c','CMAE04a2a','CMAE04a2b','CMAE04a2c','CMAE04a6_SP']]
 
     dff['ADHD'] =  dff.apply(adhd, axis=1)
     dff['OCD'] =  dff.apply(ocd, axis=1)
     dff['panic disorder'] = dff.apply(panic_disorder, axis=1)
 
-    print('ADHD#:', len(dff[dff['ADHD'] == 1]), 'ocd#:', len(dff[dff['OCD'] == 1]), 'panic disorder#:', len(dff[dff['panic disorder'] == 1]))
+    print('ADHD#:', len(dff[dff['ADHD'] == 1]), 'ocd#:', len(dff[dff['OCD'] == 1]), 'panic disorder#:', len(dff[dff['panic disorder'] == 1]),"\n")
     del dff['CMAE04a6_SP']
-
+    
     print(dff[:8], '\n')
-    print(dff.corr())
-
+    dff.to_csv('Markers.csv')
+    
 
 
 main()
