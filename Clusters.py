@@ -18,9 +18,4 @@ x.drop(columns=["PublicID"], inplace=True)
 x.drop(columns=["Unnamed: 0"], inplace=True)
 print(x.head())
 
-"""
-df1 = df[["SubEDINScore", "SubSTAIScore"]]
-df1.plot(kind="scatter",x="SubEDINScore",y="SubSTAIScore",figsize=(5,5))
-plt.show()
-"""
 
