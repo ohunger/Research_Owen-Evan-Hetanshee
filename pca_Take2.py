@@ -27,6 +27,7 @@ plt.xlabel("Num Componenents")
 plt.ylabel('Cumulative Explained Variance')
 #plt.show()
 
+#I picked 7 cause it was about above 80%, I think that is correct method
 pca = PCA(n_components=7)
 pca.fit(x)
 scoresPCA = pca.transform(x)
@@ -44,6 +45,7 @@ plt.xlabel("Num Clusters")
 plt.ylabel('wcss')
 #plt.show()
 
+#Optinum clusters via plotting looks to be 2? have to doublecheck/ask
 """
 kmeans_pca = KMeans(n_clusters = 2, init = 'k-means++', random_state=42)
 kmeans_pca.fit(scoresPCA)
