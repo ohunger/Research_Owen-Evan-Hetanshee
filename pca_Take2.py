@@ -25,7 +25,7 @@ plt.plot(range(1,13), pca.explained_variance_ratio_.cumsum(), marker = 'o', line
 plt.title('Explained Variance by Componenets')
 plt.xlabel("Num Componenents")
 plt.ylabel('Cumulative Explained Variance')
-#plt.show()
+plt.show()
 
 #I picked 7 cause it was about above 80%, I think that is correct method
 pca = PCA(n_components=7)
@@ -43,7 +43,7 @@ plt.plot(range(1,10), wcss, marker = 'o', linestyle = '--')
 plt.title('optimal clusters')
 plt.xlabel("Num Clusters")
 plt.ylabel('wcss')
-#plt.show()
+plt.show()
 
 #Optinum clusters via plotting looks to be 2? have to doublecheck/ask
 """
