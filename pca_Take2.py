@@ -27,9 +27,22 @@ plt.xlabel("Num Componenents")
 plt.ylabel('Cumulative Explained Variance')
 plt.show()
 
-
-
-
+pca = PCA(n_components=7)
+pca.fit(x)
+scoresPCA = pca.transform(x)
 
 kmeans_model = KMeans()
+wcss = [] #sum of square
+for i in range(1,10):
+    kmeans_pca = KMeans(n_clusters = i, init = 'k-means++', random_state = 42)
+    kmeans_pca.fit(scoresPCA)
+    wcss.append(kmeans_pca.inertia_)
+
+plt.figure(figsize=(10,8))
+plt.plot(range(1,10), wcss, marker = 'o', linestyle = '--')
+plt.title('optimal clusters')
+plt.xlabel("Num Clusters")
+plt.ylabel('wcss')
+plt.show()
+
 
