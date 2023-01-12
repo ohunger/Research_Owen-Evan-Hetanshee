@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from pathlib import Path 
+from sklearn.preprocessing import StandardScaler
 
 ## IMPORT from previous py
 csv = Path(__file__).with_name('Markers.CSV')
@@ -21,18 +22,35 @@ If you ever need to reduce higher dimensional arrays to 2D or 3D, you can use ts
 Hetanshee has experience using these tools and can show you how they work!
 """
 
-#No need to use the scaler since all columns should have identical range
-
-x = df
-x.drop(columns=["PublicID"], inplace=True)
+x= df
+x.drop(columns=["PublicID"], inplace=True)  #dropping non int columns
 x.drop(columns=["Unnamed: 0"], inplace=True)
 x = x.fillna(0) # Have to double check this
+x = StandardScaler().fit_transform(x)
 
-pca_2 = PCA(n_components=2)   #2 dimensions
+pca_2 = PCA(n_components=2)   #double check n_components
 pca_2_result = pca_2.fit_transform(x)
 print('\n{:.2%} retained from dataframe after PCA \n'.format(np.sum(pca_2.explained_variance_ratio_)))
-data_pca = pd.DataFrame(abs(pca_2.components_), columns=x.columns, index=['PC_1', 'PC_2'])
+
+data_pca = pd.DataFrame(pca_2_result)
 print(data_pca)
+
+plt.scatter(data_pca[0], data_pca[1], alpha=.1, color='black')
+plt.xlabel('PCA 1')
+plt.ylabel('PCA 2')
+plt.show()
+
+
+
+"""
+      #had implemented this to see graph
+features = range(pca_2.n_components_)
+plt.bar(features, pca_2.explained_variance_ratio_, color='black')
+plt.xlabel('PCA features')
+plt.ylabel('variance %')
+plt.xticks(features)
+plt.show()
+"""
 
 kmeans_model = KMeans()
 
