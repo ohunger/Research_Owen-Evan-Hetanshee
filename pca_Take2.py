@@ -27,7 +27,7 @@ plt.xlabel("Num Componenents")
 plt.ylabel('Cumulative Explained Variance')
 plt.show()
 
-#I picked 7 cause it was about above 80%, I think that is correct method
+#picked 7 cause it was about above 80%, I think that is correct method
 pca = PCA(n_components=7)
 pca.fit(x)
 scoresPCA = pca.transform(x)
@@ -55,3 +55,9 @@ dfkmeans.columns.values[-3: ] = ['Component 1', 'Component 2', 'Component 3']
 dfkmeans['Segment K-means'] = kmeans_pca.labels_
 print(dfkmeans.head())
 """
+
+#plotting data before the clustering:
+#ax.scatter(result[:, 0], result[:, 1], result[:, 2], alpha = 0.1)
+#ax.set_xlabel('X Label')
+#ax.set_ylabel('Y Label')
+#ax.set_zlabel('Z Label')
