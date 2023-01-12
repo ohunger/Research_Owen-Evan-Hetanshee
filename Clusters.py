@@ -28,7 +28,7 @@ x.drop(columns=["PublicID"], inplace=True)
 x.drop(columns=["Unnamed: 0"], inplace=True)
 x = x.fillna(0) # Have to double check this
 
-pca_2 = PCA(n_components=2)   #12 dimensions to 2
+pca_2 = PCA(n_components=2)   #2 dimensions
 pca_2_result = pca_2.fit_transform(x)
 print('\n{:.2%} retained from dataframe after PCA \n'.format(np.sum(pca_2.explained_variance_ratio_)))
 data_pca = pd.DataFrame(abs(pca_2.components_), columns=x.columns, index=['PC_1', 'PC_2'])
