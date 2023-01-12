@@ -1,11 +1,13 @@
 import numpy as np
 import pandas as pd
+
+from sklearn import datasets
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from pathlib import Path 
 from sklearn.preprocessing import StandardScaler
-
+from mpl_toolkits.mplot3d import Axes3D
 
 csv = Path(__file__).with_name('Markers.CSV')
 df = pd.read_csv(csv)
@@ -27,7 +29,7 @@ plt.xlabel("Num Componenents")
 plt.ylabel('Cumulative Explained Variance')
 plt.show()
 
-#picked 7 cause it was about above 80%, I think that is correct method
+#I picked 7 cause it was about above 80%, I think that is correct method
 pca = PCA(n_components=7)
 pca.fit(x)
 scoresPCA = pca.transform(x)
@@ -45,9 +47,9 @@ plt.xlabel("Num Clusters")
 plt.ylabel('wcss')
 plt.show()
 
-#Optinum clusters via plotting looks to be 2? have to doublecheck/ask
+#Optinum clusters via plotting looks to be 8 
 """
-kmeans_pca = KMeans(n_clusters = 2, init = 'k-means++', random_state=42)
+kmeans_pca = KMeans(n_clusters = 8, init = 'k-means++', random_state=42)
 kmeans_pca.fit(scoresPCA)
 
 dfkmeans = pd.concat([df.reset_index(drop=True),pd.DataFrame(scoresPCA)], axis=1)
@@ -56,8 +58,6 @@ dfkmeans['Segment K-means'] = kmeans_pca.labels_
 print(dfkmeans.head())
 """
 
-#plotting data before the clustering:
-#ax.scatter(result[:, 0], result[:, 1], result[:, 2], alpha = 0.1)
-#ax.set_xlabel('X Label')
-#ax.set_ylabel('Y Label')
-#ax.set_zlabel('Z Label')
+
+
+
