@@ -12,7 +12,6 @@ from mpl_toolkits.mplot3d import Axes3D
 csv = Path(__file__).with_name('Markers.CSV')
 df = pd.read_csv(csv)
 
-
 def main():
     x = df
     x.drop(columns=["PublicID"], inplace=True)  #dropping non int columns
@@ -22,6 +21,7 @@ def main():
     #x = StandardScaler().fit_transform(x)
 
 
+#function for plotting. I'm kinda not sure what they really mean by the task this is my best attempt for now
 def plottin(dataf):
     copy = pd.DataFrame({'Variables':['SubEDINScore', 'SubSTAIScore', 'Suicidality', 'CMAE04a1a', 'CMAE04a1b','CMAE04a1c','CMAE04a2a','CMAE04a2b','CMAE04a2c','ADHD','OCD','panic disorder'],'Endorsement':[0,0,0,0,0,0,0,0,0,0,0,0]})
     i = 0
@@ -36,17 +36,7 @@ def plottin(dataf):
         fontsize=9, marker = 'o', linestyle = '--',
         title = "Variables vs % Endorsement",grid=True,xticks=copy.index,
         xlabel = 'Variables',ylabel = 'Percent Endorsement')
-        
-    
     plt.show()
-    """
-    
-    plt.plot(copy.columns, copy.columnData, marker = 'o', linestyle = '--')
-    plt.title('Explained Variance by Componenets')
-    plt.xlabel("Variables")
-    plt.ylabel("Percent Endorsement")
-    plt.show()
-    """
     pass
 
 main()
