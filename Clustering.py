@@ -29,7 +29,7 @@ plt.ylabel('WCSS')
 plt.show()
 
 #clustering
-kmeans = KMeans(n_clusters=8, init='k-means++', max_iter=300, n_init=10, random_state=0).fit(X)
+kmeans = KMeans(n_clusters=6, init='k-means++', max_iter=300, n_init=10, random_state=0).fit(X)
 
 
 data['clusters'] = kmeans.labels_
