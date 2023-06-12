@@ -1,11 +1,15 @@
 import pandas as pd
 from pathlib import Path 
 
-def resilience_score(row):
-    score = 0
-    for i in range(1, 26):
-        score += row[f'V2IA{i:02}']
-    return score
+csv_file = Path(__file__).with_name('V2I.CSV')  # Load the CSV file
+df = pd.read_csv(csv_file)  # Read the CSV into a DataFrame
+
+def compute_resilience_scores(row):
+    resilience_columns = ['V2IA{:02d}'.format(i) for i in range(1, 26)]
+    # Adjust scores from 1-5 to 0-4
+    row[resilience_columns] = row[resilience_columns] - 1
+    total_score = row[resilience_columns].sum()
+    return pd.Series({'ResilienceScore': total_score})
 
 def resilience_level(score):
     if score < 50:
@@ -15,16 +19,12 @@ def resilience_level(score):
     else:
         return 'High Resilience'
 
-def main():
-    csv4 = Path('V2I.CSV')  
-    dfd = pd.read_csv(csv4)
+df = df.join(df.apply(compute_resilience_scores, axis=1))
+df['ResilienceLevel'] = df['ResilienceScore'].apply(resilience_level)
 
-    dfd['TotalResilienceScore'] = dfd.apply(resilience_score, axis=1)
-    dfd['ResilienceLevel'] = dfd['TotalResilienceScore'].apply(resilience_level)
+# Select only the necessary columns
+df = df[['PublicID', 'ResilienceScore', 'ResilienceLevel']]
 
-    dfd = dfd[['PublicID', 'TotalResilienceScore', 'ResilienceLevel']]
-    
-    print(dfd)
-    dfd.to_csv('Resilience.csv', index=False)
-
-main()
+print(df)
+resilience_counts = df['ResilienceLevel'].value_counts()
+print(resilience_counts)

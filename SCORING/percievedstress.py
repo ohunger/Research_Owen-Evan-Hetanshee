@@ -10,14 +10,19 @@ df2 = pd.read_csv(csv_file2)  # Read the CSV into a DataFrame
 df = pd.merge(df1, df2, on="PublicID", how="outer")
 
 def compute_scores(row):
+    # Reverse score the necessary questions in the 1-5 range
     reverse_columns = ['V1AH04', 'V1AH05', 'V1AH07', 'V1AH08', 'V3AG04', 'V3AG05', 'V3AG07', 'V3AG08']
-    row[reverse_columns] = 4 - row[reverse_columns]  # Adjust scores from 1-5
-    total_score = row[['V1AH{:02d}'.format(i) for i in range(1, 11)] + ['V3AG{:02d}'.format(i) for i in range(1, 11)]].sum()
+    row[reverse_columns] = 6 - row[reverse_columns]
+
+    # Adjust scores from 1-5 to 0-4 for all questions
+    pss_columns = ['V1AH{:02d}'.format(i) for i in range(1, 11)] + ['V3AG{:02d}'.format(i) for i in range(1, 11)]
+    row[pss_columns] = row[pss_columns] - 1
     
+    total_score = row[pss_columns].sum()
     return pd.Series({'TotalScore': total_score})
 
 def stress_level(score):
-    if 1 <= score <= 13:
+    if 0 <= score <= 13:
         return 'low stress'
     elif 14 <= score <= 26:
         return 'moderate stress'
