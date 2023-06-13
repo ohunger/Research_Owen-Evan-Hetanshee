@@ -1,21 +1,30 @@
 import pandas as pd
-from pathlib import Path 
+from pathlib import Path
+
+def compute_discrimination_scores(row):
+    discrimination_columns = ['V2AG01', 'V2AG02', 'V2AG03a', 'V2AG03b', 'V2AG03c', 'V2AG03d', 'V2AG03e', 'V2AG03f', 'V2AG03g', 'V2AG03h', 'V2AG03i']
+    row[discrimination_columns] = 4 - (row[discrimination_columns] - 1)
+    total_score = row[discrimination_columns].sum()
+    return pd.Series({'DiscriminationScore': total_score})
+
+def discrimination_level(score):
+    if score < 10:
+        return 'Low Discrimination'
+    elif score < 20:
+        return 'Moderate Discrimination'
+    else:
+        return 'High Discrimination'
 
 csv_file = Path(__file__).with_name('V2A.CSV')  # Load the CSV file
 df = pd.read_csv(csv_file)  # Read the CSV into a DataFrame
 
-'''
-• Purpose: Captures respondents’ experience with unfair treatment in their daily lives
-• NuMom2b: Utilizes the 9 item Daily Discrimination scale (Self-administered)
-• Response options: Respondents complete the Daily Discrimination Scale by indicating
-how often they feel discriminate against on a 1 to 4 scale
-o 1 = often
-o 2 = sometime
-o 3 = rarely
-o 4 = never
-• Scoring:
-o All items reverse scored
-o Sum all items
-▪ higher scores mean more frequent experiences of discrimination.
-• Variables: Visit 2: V2AG01 - V2AG03i
-'''
+df = df.join(df.apply(compute_discrimination_scores, axis=1))
+
+df['DiscriminationLevel'] = df['DiscriminationScore'].apply(discrimination_level)
+
+# Select only the necessary columns
+df = df[['PublicID', 'DiscriminationScore', 'DiscriminationLevel']]
+
+print(df)
+discrimination_counts = df['DiscriminationLevel'].value_counts()
+print(discrimination_counts)

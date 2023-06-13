@@ -40,3 +40,5 @@ df = df[['PublicID', 'TotalScore', 'StressLevel']]
 print(df)
 stress_counts = df['StressLevel'].value_counts()
 print(stress_counts)
+discrimination_counts = df['DiscriminationLevel'].value_counts()
+print(discrimination_counts)
